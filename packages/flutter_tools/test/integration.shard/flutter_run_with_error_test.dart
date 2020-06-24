@@ -25,7 +25,6 @@ void main() {
   });
 
   tearDown(() async {
-    await _flutter.stop();
     tryToDelete(tempDir);
   });
 
@@ -35,6 +34,9 @@ void main() {
 
     await _flutter.run(startPaused: true, withDebugger: true, structuredErrors: true);
     await _flutter.resume();
+    // TODO: fix flakiness
+    // Without this delay it seems that the build method is never called.
+    await Future<void>.delayed(const Duration(seconds: 1));
     await _flutter.stop();
 
     expect(stdout.toString(), contains(_exceptionStart));
@@ -45,6 +47,9 @@ void main() {
 
     await _flutter.run(startPaused: true, withDebugger: true, structuredErrors: true, chrome: true);
     await _flutter.resume();
+    // TODO: fix flakiness
+    // Without this delay it seems that the build method is never called.
+    await Future<void>.delayed(const Duration(seconds: 1));
 
     final Completer<void> completer = Completer<void>();
     bool lineFound = false;

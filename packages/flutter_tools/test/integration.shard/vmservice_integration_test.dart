@@ -101,6 +101,8 @@ void main() {
     });
 
     test('ext.flutter.brightnessOverride can toggle window brightness', () async {
+      // TODO(bkonyi): fix flakiness
+      await Future<void>.delayed(const Duration(seconds: 2));
       final IsolateRef isolate = (await vmService.getVM()).isolates.first;
       final Response response = await vmService.callServiceExtension(
         'ext.flutter.brightnessOverride',
